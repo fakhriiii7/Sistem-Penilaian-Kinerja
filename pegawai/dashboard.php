@@ -127,7 +127,7 @@ require_once '../includes/header.php';
             <p>Total Penilaian</p>
         </div>
     </div>
-    
+
     <div class="stat-card">
         <div class="stat-icon green">
             <i class="fas fa-chart-line"></i>
@@ -137,7 +137,7 @@ require_once '../includes/header.php';
             <p>Rata-rata Nilai</p>
         </div>
     </div>
-    
+
     <div class="stat-card">
         <div class="stat-icon orange">
             <i class="fas fa-trophy"></i>
@@ -147,7 +147,7 @@ require_once '../includes/header.php';
             <p>Nilai Tertinggi</p>
         </div>
     </div>
-    
+
     <div class="stat-card">
         <div class="stat-icon purple">
             <i class="fas fa-chart-area"></i>
@@ -162,11 +162,11 @@ require_once '../includes/header.php';
 <div class="content-section">
     <div class="main-section">
         <!-- Latest Penilaian -->
-        <?php if ($latest_penilaian): 
+        <?php if ($latest_penilaian):
             $rata_rata = $latest_penilaian['rata_rata_nilai'] ?? 0;
             $grade = '';
             $grade_color = '';
-            
+
             if ($rata_rata >= 90) {
                 $grade = 'A (Excellent)';
                 $grade_color = '#27ae60';
@@ -188,13 +188,13 @@ require_once '../includes/header.php';
                 <h2>Penilaian Terakhir</h2>
                 <span class="status-badge status-selesai">Selesai</span>
             </div>
-            
+
             <div style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                 <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 20px;">
                     <div>
                         <h3 style="margin-bottom: 10px; color: #2c3e50;"><?php echo $latest_penilaian['nama_periode']; ?></h3>
                         <div style="color: #7f8c8d; margin-bottom: 15px;">
-                            <i class="far fa-calendar-alt"></i> 
+                            <i class="far fa-calendar-alt"></i>
                             <?php echo date('d F Y', strtotime($latest_penilaian['tanggal_penilaian'])); ?>
                         </div>
                         <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
@@ -205,7 +205,7 @@ require_once '../includes/header.php';
                             </div>
                         </div>
                     </div>
-                    
+
                     <div style="text-align: center;">
                         <div style="font-size: 48px; font-weight: bold; color: <?php echo $grade_color; ?>; margin-bottom: 10px;">
                             <?php echo number_format($rata_rata, 1); ?>
@@ -216,7 +216,7 @@ require_once '../includes/header.php';
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Get detail criteria -->
                 <?php
                 if (isset($latest_penilaian['id'])) {
@@ -233,12 +233,12 @@ require_once '../includes/header.php';
                     $detail_result = null;
                 }
                 ?>
-                
+
                 <?php if ($detail_result && $detail_result->num_rows > 0): ?>
                     <div style="margin-top: 20px;">
                         <h4 style="margin-bottom: 15px;">Detail Kriteria</h4>
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
-                            <?php while ($detail = $detail_result->fetch_assoc()): 
+                            <?php while ($detail = $detail_result->fetch_assoc()):
                                 $percentage = ($detail['nilai'] / 100) * 100;
                                 $color = '';
                                 if ($detail['nilai'] >= 90) $color = '#27ae60';
@@ -265,14 +265,14 @@ require_once '../includes/header.php';
                         </div>
                     </div>
                 <?php endif; ?>
-                
+
                 <?php if (isset($latest_penilaian['id'])): ?>
-                <div style="margin-top: 25px; text-align: center;">
-                    <a href="laporan.php?id=<?php echo $latest_penilaian['id']; ?>" 
-                       target="_blank" class="btn btn-primary">
-                        <i class="fas fa-print"></i> Cetak Laporan Detail
-                    </a>
-                </div>
+                    <div style="margin-top: 25px; text-align: center;">
+                        <a href="laporan.php?id=<?php echo $latest_penilaian['id']; ?>"
+                            target="_blank" class="btn btn-primary">
+                            <i class="fas fa-print"></i> Cetak Laporan Detail
+                        </a>
+                    </div>
                 <?php endif; ?>
             </div>
         <?php else: ?>
@@ -282,12 +282,12 @@ require_once '../includes/header.php';
                 <p style="color: #7f8c8d;">Anda belum memiliki riwayat penilaian kinerja.</p>
             </div>
         <?php endif; ?>
-        
+
         <!-- History -->
         <div class="section-header" style="margin-top: 30px;">
             <h2>Riwayat Penilaian</h2>
         </div>
-        
+
         <?php if ($history_result && $history_result->num_rows > 0): ?>
             <div class="table-responsive">
                 <table class="data-table">
@@ -302,11 +302,11 @@ require_once '../includes/header.php';
                         </tr>
                     </thead>
                     <tbody>
-                        <?php while ($history = $history_result->fetch_assoc()): 
+                        <?php while ($history = $history_result->fetch_assoc()):
                             $rata_rata = $history['rata_rata_nilai'] ?? 0;
                             $grade = '';
                             $grade_color = '';
-                            
+
                             if ($rata_rata >= 90) {
                                 $grade = 'A';
                                 $grade_color = '#27ae60';
@@ -341,8 +341,8 @@ require_once '../includes/header.php';
                                     </span>
                                 </td>
                                 <td>
-                                    <a href="laporan.php?id=<?php echo $history['id']; ?>" 
-                                       target="_blank" class="btn btn-sm btn-primary">
+                                    <a href="laporan.php?id=<?php echo $history['id']; ?>"
+                                        target="_blank" class="btn btn-sm btn-primary">
                                         <i class="fas fa-eye"></i>
                                     </a>
                                 </td>
@@ -357,41 +357,41 @@ require_once '../includes/header.php';
             </div>
         <?php endif; ?>
     </div>
-    
+
     <div class="quick-actions-section">
         <div class="section-header">
             <h2>Informasi Pegawai</h2>
         </div>
-        
+
         <div style="padding: 20px; background: white; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
             <div style="display: grid; grid-template-columns: 1fr; gap: 15px;">
                 <div>
                     <small style="color: #7f8c8d;">Nama Lengkap</small>
                     <p style="font-weight: bold; margin: 5px 0;"><?php echo $pegawai['nama_lengkap']; ?></p>
                 </div>
-                
+
                 <div>
                     <small style="color: #7f8c8d;">NIP</small>
                     <p style="font-weight: bold; margin: 5px 0;"><?php echo $pegawai['nip']; ?></p>
                 </div>
-                
+
                 <div>
                     <small style="color: #7f8c8d;">Jabatan</small>
                     <p style="font-weight: bold; margin: 5px 0;"><?php echo $pegawai['jabatan']; ?></p>
                 </div>
-                
+
                 <div>
                     <small style="color: #7f8c8d;">Unit Kerja</small>
                     <p style="font-weight: bold; margin: 5px 0;"><?php echo $pegawai['unit_kerja']; ?></p>
                 </div>
-                
+
                 <?php if ($pegawai['email']): ?>
                     <div>
                         <small style="color: #7f8c8d;">Email</small>
                         <p style="font-weight: bold; margin: 5px 0;"><?php echo $pegawai['email']; ?></p>
                     </div>
                 <?php endif; ?>
-                
+
                 <?php if ($pegawai['no_telp']): ?>
                     <div>
                         <small style="color: #7f8c8d;">No. Telepon</small>
@@ -400,12 +400,12 @@ require_once '../includes/header.php';
                 <?php endif; ?>
             </div>
         </div>
-        
+
         <!-- Performance Trend -->
         <?php if ($stats['total_penilaian'] > 1): ?>
             <div style="margin-top: 30px; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                 <h4 style="margin-bottom: 15px; color: #2c3e50;">Trend Kinerja</h4>
-                
+
                 <?php
                 $trend_query = "
                     SELECT 
@@ -423,10 +423,10 @@ require_once '../includes/header.php';
                 ";
                 $trend_result = $conn->query($trend_query);
                 ?>
-                
+
                 <?php if ($trend_result && $trend_result->num_rows > 0): ?>
                     <div style="height: 200px; position: relative; margin-top: 20px;">
-                        <?php 
+                        <?php
                         $trend_data = [];
                         $max_value = 0;
                         $trend_result->data_seek(0);
@@ -436,9 +436,9 @@ require_once '../includes/header.php';
                         }
                         $max_value = max($max_value, 100);
                         ?>
-                        
+
                         <div style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; display: flex; align-items: flex-end;">
-                            <?php foreach ($trend_data as $index => $data): 
+                            <?php foreach ($trend_data as $index => $data):
                                 $height = ($data['rata_rata'] / $max_value) * 100;
                                 $color = '';
                                 if ($data['rata_rata'] >= 90) $color = '#27ae60';
@@ -448,8 +448,11 @@ require_once '../includes/header.php';
                                 else $color = '#e74c3c';
                             ?>
                                 <div style="flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; padding: 0 10px;">
-                                    <div style="width: 30px; height: <?php echo $height; ?>%; background: <?php echo $color; ?>; 
-                                         border-radius: 5px 5px 0 0; position: relative;">
+                                    <div style="<?php
+                                                echo 'width:30px;';
+                                                echo 'height:' . $height . '%;';
+                                                echo 'background:' . $color . ';';
+                                                ?> border-radius:5px 5px 0 0; position:relative;">
                                         <div style="position: absolute; top: -25px; left: 50%; transform: translateX(-50%); 
                                              white-space: nowrap; font-size: 12px; font-weight: bold; color: <?php echo $color; ?>;">
                                             <?php echo number_format($data['rata_rata'], 1); ?>
@@ -462,7 +465,7 @@ require_once '../includes/header.php';
                             <?php endforeach; ?>
                         </div>
                     </div>
-                    
+
                     <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee;">
                         <div style="font-size: 12px; color: #7f8c8d;">
                             <i class="fas fa-info-circle"></i> Menunjukkan perkembangan nilai rata-rata per periode
