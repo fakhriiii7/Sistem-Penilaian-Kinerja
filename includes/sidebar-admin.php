@@ -1,7 +1,7 @@
 <div class="sidebar">
     <div class="sidebar-header">
         <h2>Sistem Penilaian Kinerja</h2>
-        <p>Dr. Ahmad Wijaya, M.Kom</p>
+        <p><?php echo $_SESSION['nama_lengkap']; ?></p>
         <p style="font-size: 11px; opacity: 0.7;">Admin</p>
     </div>
     
