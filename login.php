@@ -1,5 +1,21 @@
 <?php
 session_start();
+
+if (isset($_SESSION['user_id'])) {
+    switch ($_SESSION['role']) {
+        case 'admin':
+            header('Location: admin/index.php');
+            break;
+        case 'pimpinan':
+            header('Location: pimpinan/index.php');
+            break;
+        case 'pegawai':
+            header('Location: pegawai/index.php');
+            break;
+    }
+    exit();
+}
+
 require_once 'config/database.php';
 
 $db = new Database();
