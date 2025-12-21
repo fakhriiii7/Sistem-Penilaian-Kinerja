@@ -104,6 +104,67 @@ if ($periode_id) {
     $grade_result = $conn->query($grade_query);
 }
 
+// EXPORT EXCEL
+if ($action == 'export' && $periode_id) {
+
+    header("Content-Type: application/vnd.ms-excel");
+    header("Content-Disposition: attachment; filename=laporan_penilaian_periode_$periode_id.xls");
+
+    echo "<table border='1'>";
+    echo "<tr>
+            <th>No</th>
+            <th>Nama Pegawai</th>
+            <th>Jabatan</th>
+            <th>Unit Kerja</th>
+            <th>Penilai</th>
+            <th>Rata-rata Nilai</th>
+            <th>Grade</th>
+          </tr>";
+
+    $q = "
+        SELECT 
+            pg.nama_lengkap,
+            pg.jabatan,
+            pg.unit_kerja,
+            pl.nama_penilai,
+            AVG(d.nilai) as rata_rata
+        FROM penilaian pn
+        JOIN pegawai pg ON pn.pegawai_id = pg.id
+        JOIN penilai pl ON pn.penilai_id = pl.id
+        JOIN detail_penilaian d ON pn.id = d.penilaian_id
+        WHERE pn.periode_id = '$periode_id'
+        AND pn.status = 'selesai'
+        GROUP BY pn.id
+        ORDER BY rata_rata DESC
+    ";
+
+    $res = $conn->query($q);
+    $no = 1;
+
+    while ($r = $res->fetch_assoc()) {
+
+        $grade = 'E';
+        if ($r['rata_rata'] >= 90) $grade = 'A';
+        elseif ($r['rata_rata'] >= 80) $grade = 'B';
+        elseif ($r['rata_rata'] >= 70) $grade = 'C';
+        elseif ($r['rata_rata'] >= 60) $grade = 'D';
+
+        echo "<tr>
+                <td>{$no}</td>
+                <td>{$r['nama_lengkap']}</td>
+                <td>{$r['jabatan']}</td>
+                <td>{$r['unit_kerja']}</td>
+                <td>{$r['nama_penilai']}</td>
+                <td>".number_format($r['rata_rata'],1)."</td>
+                <td>{$grade}</td>
+              </tr>";
+        $no++;
+    }
+
+    echo "</table>";
+    exit;
+}
+
 $page_title = 'Laporan Penilaian';
 require_once '../includes/header.php';
 
@@ -167,6 +228,7 @@ if ($action == 'detail' && $id) {
         </div>
 
         <?php if ($periode && isset($stats)): ?>
+        <div id="print-area">
             <!-- Report Header -->
             <div style="text-align: center; margin-bottom: 30px; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                 <h2>LAPORAN PENILAIAN KINERJA PEGAWAI</h2>
@@ -486,5 +548,40 @@ if ($action == 'detail' && $id) {
         <?php endif; ?>
     </div>
 </div>
+
+<style>
+@media print {
+
+    /* SEMBUNYIKAN SEMUA */
+    body * {
+        visibility: hidden;
+    }
+
+    /* TAMPILKAN HANYA AREA LAPORAN */
+    #print-area, #print-area * {
+        visibility: visible;
+    }
+
+    /* POSISI LAPORAN */
+    #print-area {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+
+    /* HILANGKAN SHADOW & BACKGROUND */
+    .card, .card-body {
+        box-shadow: none !important;
+        border: none !important;
+    }
+
+    /* RAPATKAN TABEL */
+    table {
+        font-size: 12px;
+    }
+
+}
+</style>
 
 <?php require_once '../includes/footer.php'; ?>

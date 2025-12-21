@@ -217,8 +217,8 @@ require_once '../includes/header.php';
                                     </div>
                                 </td>
                                 <td>
-                                    <a href="#" class="btn btn-sm btn-info" 
-                                       onclick="showPenilaianDetail(<?php echo $row['id']; ?>)">
+                                    <a href="penilaian_detail.php?id=<?php echo $row['id']; ?>" 
+                                       class="btn btn-sm btn-info">
                                         <i class="fas fa-eye"></i> Lihat
                                     </a>
                                 </td>
@@ -229,11 +229,6 @@ require_once '../includes/header.php';
                                            onclick="return confirm('Apakah Anda yakin ingin menghapus penilaian ini?')"
                                            title="Hapus">
                                             <i class="fas fa-trash"></i>
-                                        </a>
-                                        <a href="laporan.php?action=detail&id=<?php echo $row['id']; ?>" 
-                                           target="_blank"
-                                           class="btn btn-sm btn-warning" title="Cetak">
-                                            <i class="fas fa-print"></i>
                                         </a>
                                     </div>
                                 </td>
@@ -315,74 +310,198 @@ require_once '../includes/header.php';
     </div>
 </div>
 
-<!-- Modal Detail Penilaian -->
-<div id="detailPenilaianModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
-    <div style="background: white; width: 90%; max-width: 800px; border-radius: 10px; padding: 30px; max-height: 80vh; overflow-y: auto;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h3 style="margin: 0;">Detail Penilaian</h3>
-            <button onclick="closeDetailPenilaianModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #7f8c8d;">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        
-        <div id="detailPenilaianContent">
-            <div style="text-align: center; padding: 40px;">
-                <div class="spinner"></div>
-                <p>Memuat data...</p>
-            </div>
-        </div>
-        
-        <div style="margin-top: 20px; text-align: right;">
-            <button onclick="closeDetailPenilaianModal()" class="btn btn-primary">Tutup</button>
-        </div>
-    </div>
-</div>
-
-<script>
-function showPenilaianDetail(penilaianId) {
-    const modal = document.getElementById('detailPenilaianModal');
-    const content = document.getElementById('detailPenilaianContent');
-    
-    modal.style.display = 'flex';
-    
-    // Load data via AJAX
-    // First, create a simple detail view without AJAX
-    // In production, you would create a separate PHP file for AJAX
-    content.innerHTML = `
-        <div style="text-align: center; padding: 20px;">
-            <p>Fitur detail sedang dalam pengembangan...</p>
-            <p>ID Penilaian: ${penilaianId}</p>
-        </div>
-    `;
-    
-    // Untuk versi produksi, gunakan ini:
-    /*
-    fetch(`ajax/get_penilaian_detail.php?id=${penilaianId}`)
-        .then(response => response.text())
-        .then(data => {
-            content.innerHTML = data;
-        })
-        .catch(error => {
-            content.innerHTML = `
-                <div style="text-align: center; padding: 40px; color: #e74c3c;">
-                    <i class="fas fa-exclamation-circle" style="font-size: 48px; margin-bottom: 20px;"></i>
-                    <p>Gagal memuat data penilaian</p>
-                </div>
-            `;
-        });
-    */
-}
-
-function closeDetailPenilaianModal() {
-    document.getElementById('detailPenilaianModal').style.display = 'none';
-}
-
-// Close modal when clicking outside
-document.getElementById('detailPenilaianModal').addEventListener('click', function(e) {
-    if (e.target === this) {
-        closeDetailPenilaianModal();
+<style>
+    /* General table styles */
+    .table-responsive {
+        width: 100%;
+        margin-bottom: 1rem;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
-});
-</script>
+    
+    .data-table {
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 1rem;
+        background-color: transparent;
+        border-collapse: collapse;
+    }
+    
+    .data-table th,
+    .data-table td {
+        padding: 0.75rem;
+        vertical-align: top;
+        border-top: 1px solid #e3e6f0;
+    }
+    
+    .data-table thead th {
+        vertical-align: bottom;
+        border-bottom: 2px solid #e3e6f0;
+        background-color: #f8f9fc;
+        color: #4e73df;
+        font-weight: 600;
+    }
+    
+    .data-table tbody tr:hover {
+        background-color: rgba(0, 0, 0, 0.03);
+    }
+    
+    /* Status badges */
+    .status-badge {
+        display: inline-block;
+        padding: 0.35em 0.65em;
+        font-size: 0.75em;
+        font-weight: 700;
+        line-height: 1;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: 0.25rem;
+    }
+    
+    .status-active {
+        color: #1cc88a;
+        background-color: rgba(28, 200, 138, 0.2);
+    }
+    
+    .status-pending {
+        color: #f6c23e;
+        background-color: rgba(246, 194, 62, 0.2);
+    }
+    
+    /* Buttons */
+    .btn {
+        display: inline-block;
+        font-weight: 400;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        user-select: none;
+        border: 1px solid transparent;
+        padding: 0.375rem 0.75rem;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        border-radius: 0.35rem;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, 
+                    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        border-radius: 0.2rem;
+    }
+    
+    .btn-info {
+        color: #fff;
+        background-color: #36b9cc;
+        border-color: #36b9cc;
+    }
+    
+    .btn-info:hover {
+        color: #fff;
+        background-color: #2c9faf;
+        border-color: #2a96a5;
+    }
+    
+    .btn-danger {
+        color: #fff;
+        background-color: #e74a3b;
+        border-color: #e74a3b;
+    }
+    
+    .btn-danger:hover {
+        color: #fff;
+        background-color: #e02d1b;
+        border-color: #d52a1a;
+    }
+    
+    .btn-warning {
+        color: #fff;
+        background-color: #f6c23e;
+        border-color: #f6c23e;
+    }
+    
+    .btn-warning:hover {
+        color: #fff;
+        background-color: #f4b619;
+        border-color: #f4b30d;
+    }
+    
+    /* Card styles */
+    .card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 1px solid #e3e6f0;
+        border-radius: 0.35rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+    }
+    
+    .card-header {
+        padding: 1rem 1.25rem;
+        margin-bottom: 0;
+        background-color: #f8f9fc;
+        border-bottom: 1px solid #e3e6f0;
+    }
+    
+    .card-header:first-child {
+        border-radius: calc(0.35rem - 1px) calc(0.35rem - 1px) 0 0;
+    }
+    
+    .card-body {
+        flex: 1 1 auto;
+        min-height: 1px;
+        padding: 1.25rem;
+    }
+    
+    /* Form controls */
+    .form-control {
+        display: block;
+        width: 100%;
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-size: 0.9rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #6e707e;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #d1d3e2;
+        border-radius: 0.35rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    
+    .form-control:focus {
+        color: #6e707e;
+        background-color: #fff;
+        border-color: #bac8f3;
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .card-body {
+            padding: 1rem;
+        }
+        
+        .data-table th,
+        .data-table td {
+            padding: 0.5rem;
+        }
+        
+        .btn {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+    }
+</style>
 
 <?php require_once '../includes/footer.php'; ?>
