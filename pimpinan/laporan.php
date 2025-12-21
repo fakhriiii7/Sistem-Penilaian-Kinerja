@@ -117,16 +117,17 @@ require_once '../includes/header.php';
                 </div>
                 <button type="submit" class="btn btn-primary">Tampilkan</button>
                 <?php if ($periode_id): ?>
-                    <a href="cetak_laporan.php?periode_id=<?php echo $periode_id; ?>" target="_blank" class="btn btn-secondary">
+                    <button onclick="window.print()" class="btn btn-secondary" class="btn btn-secondary">
                         <i class="fas fa-print"></i> Cetak Laporan
-                    </a>
+                    </button>
                 <?php endif; ?>
             </form>
         </div>
 
         <?php if ($periode && isset($stats)): ?>
             <!-- Report Header -->
-            <div style="text-align: center; margin-bottom: 30px; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <div id="print-area">
+            <div class="print-title" style="text-align: center; margin-bottom: 30px; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                 <h2>LAPORAN PENILAIAN KINERJA PEGAWAI</h2>
                 <h3><?php echo $periode['nama_periode']; ?></h3>
                 <p>Periode: <?php echo date('d F Y', strtotime($periode['tanggal_mulai'])) . ' - ' . date('d F Y', strtotime($periode['tanggal_selesai'])); ?></p>
@@ -304,6 +305,7 @@ require_once '../includes/header.php';
             </div>
         <?php endif; ?>
     </div>
+    </div>
 </div>
 
 <style>
@@ -313,5 +315,55 @@ require_once '../includes/header.php';
     .grade-d { color: #e67e22; font-weight: bold; }
     .grade-e { color: #e74c3c; font-weight: bold; }
 </style>
+
+<style>
+@media print {
+
+    /* SEMBUNYIKAN SEMUA */
+    body * {
+        visibility: hidden;
+    }
+
+    /* TAMPILKAN LAPORAN SAJA */
+    #print-area,
+    #print-area * {
+        visibility: visible;
+    }
+
+    /* POSISI LAPORAN (HILANGKAN SPACE KIRI) */
+    #print-area {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+
+    /* BODY TANPA MENGUBAH STYLE */
+    body {
+        zoom: 0.7;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* CARD TETAP */
+    .card,
+    .card-body {
+        box-shadow: none; /* hanya shadow, warna tetap */
+    }
+
+    /* HILANGKAN TOMBOL SAAT PRINT */
+    .btn,
+    form {
+        display: none !important;
+    }
+
+    /* PAGE */
+    @page {
+        size: A4;
+        margin: 15mm;
+    }
+}
+</style>
+
 
 <?php require_once '../includes/footer.php'; ?>

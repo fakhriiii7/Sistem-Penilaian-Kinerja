@@ -436,6 +436,20 @@ require_once '../includes/header.php';
                                 </div>
                             <?php endwhile; ?>
 
+                            <div class="form-group" style="grid-column: span 2;">
+                                <label for="catatan">Catatan Penilai</label>
+                                <textarea
+                                    id="catatan"
+                                    name="catatan"
+                                    class="form-control"
+                                    rows="4"
+                                    placeholder="Catatan umum dari penilai (opsional)..."></textarea>
+                                <small style="color:#7f8c8d;">
+                                    Catatan umum penilaian, akan tersimpan di data penilaian
+                                </small>
+                            </div>
+
+
                             <div style="padding: 20px; background: #2c3e50; color: white; border-radius: 10px; text-align: center; margin-top: 30px;">
                                 <h4 style="margin: 0;">Total Bobot: <?php echo $total_bobot; ?>%</h4>
                                 <p style="margin: 5px 0 0 0; opacity: 0.8;">
