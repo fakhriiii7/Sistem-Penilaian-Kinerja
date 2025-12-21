@@ -149,15 +149,16 @@ require_once '../includes/header.php';
                 </div>
                 <button type="submit" class="btn btn-primary">Tampilkan</button>
                 <?php if ($periode_id && !empty($penilaian)): ?>
-                    <a href="cetak_laporan.php?periode_id=<?php echo $periode_id; ?>" target="_blank" class="btn btn-secondary">
+                    <button onclick="window.print()" class="btn btn-secondary">
                         <i class="fas fa-print"></i> Cetak Laporan
-                    </a>
+                    </button>
                 <?php endif; ?>
             </form>
         </div>
 
         <?php if ($periode && !empty($penilaian)): ?>
             <!-- Report Header -->
+        <div id="print-area">
             <div style="text-align: center; margin-bottom: 30px; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                 <h2>LAPORAN HASIL PENILAIAN KINERJA</h2>
                 <h3><?php echo $periode['nama_periode']; ?></h3>
@@ -212,7 +213,7 @@ require_once '../includes/header.php';
             <!-- Detail Penilaian -->
             <div style="margin-bottom: 30px;">
                 <h3 style="margin-bottom: 20px;">Detail Penilaian</h3>
-                <div class="table-responsive">
+                <div class="table-responsive" style="width:100%">
                     <table class="data-table">
                         <thead>
                             <tr>
@@ -277,6 +278,7 @@ require_once '../includes/header.php';
             </div>
         <?php endif; ?>
     </div>
+    </div>
 </div>
 
 <style>
@@ -318,6 +320,76 @@ require_once '../includes/header.php';
             overflow-x: auto;
         }
     }
+</style>
+
+<style>
+@media print {
+
+    /* SEMBUNYIKAN SEMUA */
+    body * {
+        visibility: hidden;
+    }
+
+    /* TAMPILKAN LAPORAN SAJA */
+    #print-area,
+    #print-area * {
+        visibility: visible;
+    }
+
+    /* POSISI LAPORAN (HILANGKAN SPACE KIRI) */
+    #print-area {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+
+    /* BODY TANPA MENGUBAH STYLE */
+    body {
+        zoom: 0.7;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* CARD TETAP */
+    .card,
+    .card-body {
+        box-shadow: none; /* hanya shadow, warna tetap */
+    }
+
+    /* HILANGKAN TOMBOL SAAT PRINT */
+    .btn,
+    form {
+        display: none !important;
+    }
+
+    /* PAGE */
+    @page {
+        size: A4;
+        margin: 15mm;
+    }
+}
+
+@media print {
+
+    /* Paksa tabel full halaman */
+    .table-responsive {
+        overflow: visible !important;
+    }
+
+    .data-table {
+        width: 100% !important;
+        max-width: 100% !important;
+        table-layout: fixed;
+    }
+
+    .data-table th,
+    .data-table td {
+        word-wrap: break-word;
+        white-space: normal;
+    }
+
+}
 </style>
 
 <?php require_once '../includes/footer.php'; ?>
