@@ -1,36 +1,17 @@
 <?php
 /**
- * Script untuk generate password hash
- * Jalankan script ini untuk mendapatkan hash password baru
- * 
- * Usage: php generate_password_hash.php
+ * File ini digunakan untuk membuat hash password
+ * Gunakan hasil hash untuk disimpan ke database
  */
 
-echo "=== GENERATE PASSWORD HASH ===\n\n";
+// Password yang ingin di-hash
+$password = 'pimpinan123'; // GANTI sesuai kebutuhan
 
-// Password yang akan di-hash
-$passwords = [
-    'password123' => 'Password default untuk admin dan pimpinan',
-    'budi123' => 'Password untuk pegawai Budi',
-    'sari123' => 'Password untuk pegawai Sari',
-    'doni123' => 'Password untuk pegawai Doni',
-    'lina123' => 'Password untuk pegawai Lina',
-];
+// Generate hash menggunakan algoritma default (bcrypt)
+$hash = password_hash($password, PASSWORD_DEFAULT);
 
-foreach ($passwords as $password => $description) {
-    $hash = password_hash($password, PASSWORD_DEFAULT);
-    echo "Password: {$password}\n";
-    echo "Deskripsi: {$description}\n";
-    echo "Hash: {$hash}\n";
-    echo "SQL: INSERT INTO users (username, password, role, nama_lengkap) VALUES ('username', '{$hash}', 'role', 'Nama');\n";
-    echo str_repeat('-', 80) . "\n\n";
-}
-
-// Verify hash
-echo "\n=== VERIFY HASH ===\n";
-$test_password = 'password123';
-$test_hash = password_hash($test_password, PASSWORD_DEFAULT);
-echo "Password: {$test_password}\n";
-echo "Hash: {$test_hash}\n";
-echo "Verify: " . (password_verify($test_password, $test_hash) ? 'SUCCESS' : 'FAILED') . "\n";
-
+// Tampilkan hasil
+echo "<h3>Generator Hash Password</h3>";
+echo "<p><strong>Password Asli:</strong> {$password}</p>";
+echo "<p><strong>Hash Password:</strong></p>";
+echo "<textarea cols='100' rows='3'>{$hash}</textarea>";
