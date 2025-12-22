@@ -1,4 +1,13 @@
-"# sistem-penilaian-kinerja" 
+07TPLP018 - Kelompok 2
+Anggota
+- Alda Ailsa Alvita
+- Muhammad Fakhri Azmar
+- Muhamad Dimas Aditiya
+- Martuah Pardamean Wijaya Siahaan
+- Indika Saputra
+
+Aplikasi Website Sistem Penilaian Kinerja
+
 Halaman Login
 <img width="1920" height="1080" alt="Screenshot 2025-12-22 072917" src="https://github.com/user-attachments/assets/f1cc55e8-72a7-43f9-ad34-f9923a6ca0ee" />
 
