@@ -301,7 +301,7 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="app-wrapper">
         <!-- SIDEBAR BERDASARKAN ROLE -->
         <?php 
         if (isset($_SESSION['role'])) {
