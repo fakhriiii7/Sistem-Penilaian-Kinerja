@@ -303,7 +303,6 @@ require_once '../includes/header.php';
                         <input type="text" id="nama_depan" name="nama_depan" class="form-control"
                             value="<?php echo $pegawai_data['nama_depan'] ?? ''; ?>" required
                             placeholder="Contoh: Budi">
-                        <small style="color: #7f8c8d;">Akan digunakan sebagai username (lowercase)</small>
                     </div>
 
                     <div class="form-group">
