@@ -198,7 +198,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
     <div class="login-container">
         <div class="login-header">
-            <h1>SPK-Pegawai</h1>
+            <h1>Sistem Penilaian Kinerja</h1>
             <p>Silakan login untuk mengakses sistem</p>
         </div>
         
@@ -239,7 +239,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
         
         <div class="login-footer">
-            <p>© <?php echo date('Y'); ?> SPK-Pegawai. All rights reserved.</p>
+            <p>© <?php echo date('Y'); ?> Sistem Penilaian Kinerja | Kelompok 2 | 07TPLP018</p>
         </div>
     </div>
 
