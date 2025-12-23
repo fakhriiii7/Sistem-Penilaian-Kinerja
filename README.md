@@ -1,15 +1,23 @@
-07TPLP018 - Kelompok 2
-Anggota
+**07TPLP018 - Kelompok 2
+Anggota**
 - Alda Ailsa Alvita
 - Muhammad Fakhri Azmar
 - Muhamad Dimas Aditiya
 - Martuah Pardamean Wijaya Siahaan
 - Indika Saputra
 
-Aplikasi Website Sistem Penilaian Kinerja
+**Aplikasi Website Sistem Penilaian Kinerja**
+Sistem Penilaian Kinerja adalah website yang membantu pengelolaan dan evaluasi kinerja pegawai secara mudah, cepat, dan transparan. Dilengkapi dengan fitur pengelolaan data, penilaian berbasis kriteria, serta laporan yang informatif, sistem ini mendukung proses evaluasi yang lebih terstruktur dan objektif.
 
-Halaman Login
+**Aktor**
+- Admin (Kelola Data Penilai/Pimpinan, Pegawai, Dan Laporan)
+- Pimpinan/Penilai (Kelola Nilai Pegawai)
+- Pegawai (Melihat Laporan Penilaian Pribadi, Dan Kelola Data Pribadi)
+
+**Tampilan UI/UX**
+**Halaman Login**
 <img width="1920" height="1080" alt="Screenshot 2025-12-22 072917" src="https://github.com/user-attachments/assets/f1cc55e8-72a7-43f9-ad34-f9923a6ca0ee" />
+
 
 A. Halaman Admin
 1. Dashboard
