@@ -99,11 +99,15 @@ Menampilkan Laporan penilaian yang telah dilakukan.
 Dapat mengganti beberapa informasi yang tidak bisa di edit di admin.
 
 **Hak Akses**
+
 **- Admin**
 
 username: admin | password: admin123
+
 **- Pimpinan**
 
 username: pimpinan1, pimpinan2 | password: pimpinan123
+
 **- Pegawai**
+
 username: sari, doni | password: sari123, doni123
