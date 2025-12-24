@@ -1,5 +1,6 @@
-**07TPLP018 - Kelompok 2
-Anggota**
+**07TPLP018 - Kelompok 2**
+
+**Anggota**
 - Alda Ailsa Alvita
 - Muhammad Fakhri Azmar
 - Muhamad Dimas Aditiya
